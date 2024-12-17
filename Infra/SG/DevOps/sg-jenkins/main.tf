@@ -7,6 +7,12 @@ terraform {
       version = "5.38.0"
     }
   }
+
+  backend "s3" {
+    bucket = "getrak-devops-tfstate-s3-project"
+    key    = "getrak-devops/infra/sg/terraform.tfstate"
+    region = "us-east-1"
+  }
 }
 
 provider "aws" {

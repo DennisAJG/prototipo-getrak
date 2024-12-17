@@ -1,6 +1,6 @@
-resource "aws_security_group" "sg_jenkins_devops_security" {
-  name   = var.project_name
-  vpc_id = data.terraform_remote_state.vpc.outputs.vpc
+resource "aws_security_group" "sg_jenkins_devops_security_project_getrak" {
+  name   = var.project_getrak_devops
+  vpc_id = data.vpc_cidr_project_getrak_devops_remote.outputs.vpc_id_project_getrak_devops.vpc_id
 
   egress {
     from_port   = 0
@@ -21,7 +21,7 @@ resource "aws_security_group" "sg_jenkins_devops_security" {
 
   tags = {
     Name    = "${var.sg_name}"
-    Projeto = "${var.project_name}"
+    Projeto = "${var.project_getrak_devops}"
   }
 
 }

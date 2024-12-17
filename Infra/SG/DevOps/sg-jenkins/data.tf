@@ -1,8 +1,8 @@
-data "terraform_remote_state" "vpc" {
+data "terraform_remote_state" "vpc_cidr_project_getrak_devops_remote" {
   backend = "s3"
   config = {
-    bucket = "eco-sertao-s3-terraform-tfstate"
-    key    = "aws_vpc/terraform.tfstate"
+    bucket = "getrak-devops-tfstate-s3-project"
+    key    = "getrak-devops/infra/network/terraform.tfstate"
     region = "us-east-1"
   }
 }
