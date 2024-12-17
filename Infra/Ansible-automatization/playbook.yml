@@ -2,7 +2,7 @@
 - name: Install Docker, Docker-Compose, and NGINX
   hosts: all
   become: yes
-  
+
   tasks:
     - name: Update apt package list
       apt:
@@ -17,10 +17,29 @@
           - curl
           - gnupg
           - lsb-release
-          - nginx
         state: present
 
-    # Docker Installation Steps
+    - name: Change hostname to 'devops-jenkins' if host belongs to 'jenkins' group
+      hostname:
+        name: devops-jenkins
+      when: "'jenkins' in group_names"
+
+    - name: Update /etc/hosts with new hostname
+      lineinfile:
+        path: /etc/hosts
+        regexp: '^127\.0\.1\.1'
+        line: "127.0.1.1 devops-jenkins"
+      when: "'jenkins' in group_names"
+
+    - name: Reboot the server to apply hostname changes
+      reboot:
+        msg: "Rebooting to apply hostname changes"
+        pre_reboot_delay: 5
+        post_reboot_delay: 15
+        test_command: "hostnamectl"
+      when: "'jenkins' in group_names"
+
+    # Docker Installation
     - name: Add Docker GPG key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
@@ -42,38 +61,15 @@
         state: started
         enabled: yes
 
-    - name: Add user to the docker group
-      user:
-        name: "{{ ansible_user }}"
-        groups: docker
-        append: yes
-
-    # Docker Compose Installation
     - name: Install Docker Compose
       get_url:
         url: "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-{{ ansible_system | lower }}-{{ ansible_architecture }}"
         dest: /usr/local/bin/docker-compose
         mode: 'u+x'
 
-    - name: Verify Docker Compose installation
-      command: docker-compose --version
-      register: docker_compose_version
+    - name: Add user to the docker group
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
 
-    - name: Print Docker Compose version
-      debug:
-        msg: "Docker Compose version: {{ docker_compose_version.stdout }}"
-
-    # NGINX Installation and Configuration
-    - name: Ensure NGINX is running
-      service:
-        name: nginx
-        state: started
-        enabled: yes
-
-    - name: Print NGINX status
-      command: systemctl status nginx
-      register: nginx_status
-
-    - name: Display NGINX status
-      debug:
-        msg: "{{ nginx_status.stdout_lines }}"
