@@ -9,10 +9,9 @@ terraform {
   }
 
   backend "s3" {
-    profile = "user-getrak"
-    bucket  = "getrak-devops-tfstate-s3-project"
-    key     = "getrak-devops/infra/network/terraform.tfstate"
-    region  = "us-east-1"
+    bucket = "getrak-devops-tfstate-s3-project"
+    key    = "getrak-devops/infra/ec2/jenkins/terraform.tfstate"
+    region = "us-east-1"
   }
 }
 

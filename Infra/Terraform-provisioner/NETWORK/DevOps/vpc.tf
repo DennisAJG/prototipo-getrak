@@ -1,7 +1,7 @@
 resource "aws_vpc" "vpc_project_getrak_devops" {
   cidr_block           = var.vpc_cidr_project_getrak_devops
-  enable_dns_support   = "false"
-  enable_dns_hostnames = "false"
+  enable_dns_support   = "true"
+  enable_dns_hostnames = "true"
   instance_tenancy     = "default"
 
   tags = {

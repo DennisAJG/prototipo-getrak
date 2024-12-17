@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "bucket_getrak_devops_tfstate" {
   bucket = var.name_bucket_getrak_devops_tfstate
+  
 
   tags = {
     Name        = var.name_bucket_getrak_devops_tfstate

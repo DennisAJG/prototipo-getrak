@@ -1,4 +1,4 @@
-data "aws_ami" "getrak_ami" {
+data "aws_ami" "getrak_ami_devops" {
   most_recent = true
 
   filter {
@@ -11,5 +11,5 @@ data "aws_ami" "getrak_ami" {
     values = ["hvm"]
   }
 
-  owners = ["099720109477"] 
+  owners = ["099720109477"]
 }
